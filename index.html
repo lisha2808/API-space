@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>	
+	<title>Assignment1</title>
+</head>
+
+<body>
+	<div class="d-flex justify-content-center">
+		<div class="spinner-border" role="status" id="loading">
+			<span class="sr-only"></span>
+		</div>
+	</div>
+	<h1 style= "color: black; padding: 20px; text-align: center">SpaceX Information</h1>
+	<table class="table table-dark table-hover;" id="employees"></table>
+</body>
+
+</html>
+
+<script>
+	const api_url =
+		"https://api.spacexdata.com/v4/launches/";
+
+	async function getapi(url) {
+
+		const response = await fetch(url);
+		var data = await response.json();
+		console.log(data);
+		if (response) {
+			hideloader();
+		}
+		show(data);
+	}
+	getapi(api_url);
+	function hideloader() {
+		document.getElementById('loading').style.display = 'none';
+	}
+	function show(data) {
+		let tab =
+
+			`
+					<tr>
+						<th>Flight Number</th>
+						<th>Name</th>
+						<th>Date and Time(utc) </th>
+						<th>Wikipedia</th>
+						<th>Articles</th>
+						<th>YouTube</th>
+
+
+					</tr>
+				`
+		for (let r of data) {
+			tab += `<tr>
+
+			<td>${r.flight_number} </td>
+
+			<td>${r.name} </td>
+
+			<td>${r.date_utc} </td>
+
+
+			<td> <a href="${r.links["wikipedia"]}" style="color: white; text-decoration: none;">${r.links["wikipedia"]}</a></td>
+			
+			<td> <a href="${r.links["article"]}" style="color: white; text-decoration: none;">${r.links["article"]}</a></td>
+
+			<td> <a href="${r.links["webcast"]}" style="color: white; text-decoration: none;">${r.links["webcast"]}</a></td>
+
+</tr>`;
+		}
+
+		document.getElementById("employees").innerHTML = tab;
+	}
+</script>
+</html>
